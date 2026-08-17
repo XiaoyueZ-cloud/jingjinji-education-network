@@ -1,0 +1,38 @@
+/* web7：沿用 V6.4 组件，按监测大屏示意图重新拼接 */
+.dash-main.web7-home-grid{grid-template-columns:27% 45% 28%!important;gap:10px!important;overflow:hidden!important}
+.web7-col{display:grid;gap:10px;min-width:0;min-height:0;overflow:hidden}
+.web7-col--left{grid-template-rows:52% 26% 22%}
+.web7-col--center{grid-template-rows:54% 25% 21%}
+.web7-col--right{grid-template-rows:27% 48% 25%}
+.web7-col>*{min-width:0!important;min-height:0!important;height:auto!important;overflow:hidden!important;margin:0!important}
+.web7-col .event-list__scroll{height:calc(100% - 34px)!important;overflow:hidden!important}
+.web7-col .event-item{display:flex;align-items:flex-start;gap:9px;padding:7px 3px;border-bottom:1px solid rgba(126,177,225,.12)}
+.web7-col .event-item__tag{flex:0 0 72px;border:1px solid rgba(0,212,255,.25);border-radius:4px;padding:3px 4px;color:#4cddff;background:rgba(0,145,210,.12);font-size:11px;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.web7-col .event-item__content{min-width:0;flex:1}
+.web7-col .event-item__title{color:#e8f2ff;font-size:12px;line-height:18px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin:0}
+.web7-col .event-item__meta{color:#6e8bab;font-size:10px;margin-top:2px}
+.web7-col .dash-panel{padding:13px!important}
+.web7-col .dash-panel--map{min-height:0!important}
+.web7-col .dash-panel--map{position:relative!important;padding-left:13px!important}
+.web7-col .dash-panel--map .jjj-map-wrapper{margin-left:208px!important;width:calc(100% - 208px)!important;height:calc(100% - 40px)!important;min-height:0!important}
+.web7-dimension{position:absolute!important;z-index:8!important;left:13px;top:48px;bottom:13px;width:188px;padding:9px 8px;border:1px solid rgba(0,212,255,.18);border-radius:7px;background:linear-gradient(180deg,rgba(7,30,67,.94),rgba(8,20,46,.74));overflow:hidden}
+.web7-dimension__title{font-size:12px;color:#d8eaff;font-weight:600;margin-bottom:7px;white-space:nowrap}
+.web7-dimension__table{width:100%;border-collapse:collapse;font-size:10px;color:#aec5dd;table-layout:fixed}
+.web7-dimension__table th{color:#6f91b2;font-weight:400;padding:5px 1px;border-bottom:1px solid rgba(110,163,210,.18);text-align:center}
+.web7-dimension__table th:first-child,.web7-dimension__table td:first-child{text-align:left;width:52px;color:#cce0f4}
+.web7-dimension__table td{height:30px;padding:3px 1px;text-align:center;border-bottom:1px solid rgba(110,163,210,.1);font-family:Consolas,"Microsoft YaHei",sans-serif;color:#82a1bd}
+.web7-dimension__placeholder{display:inline-block;color:#7d92a8;font-size:13px;line-height:1}
+.web7-dimension__note{position:absolute;left:8px;right:8px;bottom:7px;color:#627b96;font-size:9px;line-height:13px}
+.web7-col .dash-panel--map .jjj-map-legend{display:none!important}
+.web7-col .dash-panel--resources{min-height:0!important}
+.web7-col .dash-panel--pie{min-height:0!important}
+.web7-col--left .rank-panel{padding:12px!important;overflow:hidden!important}
+.web7-col--left .rank-item{min-height:44px!important;padding:6px 10px!important}
+.web7-network-panel{position:relative;display:flex;flex-direction:column;background:rgba(13,27,62,.6);border:1px solid rgba(0,212,255,.15);border-radius:12px;padding:13px;overflow:hidden}
+.web7-network-panel:before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,212,255,.03),rgba(124,58,237,.03));pointer-events:none}
+.web7-network-head{color:#fff;font-size:16px;font-weight:600;letter-spacing:1px;padding-left:12px;margin-bottom:8px;position:relative;z-index:2}
+.web7-network-head:before{content:"";position:absolute;left:0;top:2px;width:3px;height:16px;border-radius:2px;background:linear-gradient(135deg,#00d4ff,#09c)}
+.web7-network-frame{width:142%;height:142%;border:0;transform:scale(.704);transform-origin:0 0;background:#07152e;position:relative;z-index:1}
+.web7-network-link{position:absolute;right:13px;top:10px;z-index:3;color:#65ddff;font-size:11px;cursor:pointer}
+.web7-data-badge{position:fixed;right:18px;bottom:12px;z-index:850;color:#6c8fae;font-size:10px;pointer-events:none}
+@media(max-width:1100px){.dash-main.web7-home-grid{grid-template-columns:28% 44% 28%!important}}
