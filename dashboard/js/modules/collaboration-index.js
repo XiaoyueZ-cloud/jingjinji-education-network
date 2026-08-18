@@ -15,6 +15,12 @@
     const trendPanel = root.querySelector('.collab-index-trend-panel');
     const tooltip = root.querySelector('.collab-index-tooltip');
     const modal = root.querySelector('.collab-index-modal');
+    trendPanel.querySelector('.collab-index-section-head h2').textContent = '京津冀教育协同度指数';
+    const legendLabels = ['京津冀教育协同发展指数', '北京', '天津', '河北'];
+    trendPanel.querySelectorAll('.collab-index-legend span').forEach((item, index) => {
+      const marker = item.querySelector('i');
+      item.replaceChildren(marker, document.createTextNode(legendLabels[index] || ''));
+    });
     root.replaceChildren(trendPanel, tooltip, modal);
     trendPanel.querySelector('.collab-index-note')?.remove();
     host.innerHTML = `<style>${style}

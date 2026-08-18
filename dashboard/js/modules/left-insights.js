@@ -5,13 +5,14 @@
   if (!data) return;
 
   // 逐项录入用户提供的“协同领域分类结果”Excel（Sheet1）统计值。
+  // 保留事件数量排名前四的分类，其余四类合并展示为“其他”。
   const totals = [
-    ['科技创新协同', 312, 36.03, '#18baf3'], ['产业协同', 132, 15.24, '#9068dd'],
-    ['办学合作协同', 126, 14.55, '#3eb576'], ['人才协同', 122, 14.09, '#ff9410'],
-    ['治理结构协同', 96, 11.09, '#ffd51a'], ['产教融合协同', 55, 6.35, '#ff624b'],
-    ['资源协同', 22, 2.54, '#52cbd0'], ['其他', 1, 0.12, '#b7babd']
-  ].map(([name, value, percent, color]) => ({ name, value, percent, itemStyle: { color } }));
-  const totalEvents = totals.reduce((sum, item) => sum + item.value, 0);
+    ['科技创新协同', 312, '#18baf3'], ['产业协同', 132, '#9068dd'],
+    ['办学合作协同', 126, '#3eb576'], ['人才协同', 122, '#ff9410'],
+    ['其他', 96 + 55 + 22 + 1, '#b7babd']
+  ];
+  const totalEvents = totals.reduce((sum, [, value]) => sum + value, 0);
+  const chartData = totals.map(([name, value, color]) => ({ name, value, percent: value / totalEvents * 100, itemStyle: { color } }));
 
   const pieRoot = document.getElementById('jjj-category-pie');
   if (pieRoot && window.echarts) {
@@ -26,13 +27,13 @@
         orient: 'vertical', right: 7, top: 'middle', itemWidth: 8, itemHeight: 8, itemGap: 8,
         textStyle: { color: '#c4ddec', fontSize: 10 },
         formatter: name => {
-          const item = totals.find(entry => entry.name === name);
+          const item = chartData.find(entry => entry.name === name);
           return `${name}  ${item.percent.toFixed(2)}%`;
         }
       },
       series: [{
         type: 'pie', radius: ['48%', '72%'], center: ['31%', '52%'], avoidLabelOverlap: true,
-        itemStyle: { borderColor: '#0a203e', borderWidth: 3 }, label: { show: false }, data: totals
+        itemStyle: { borderColor: '#0a203e', borderWidth: 3 }, label: { show: false }, data: chartData
       }]
     });
     new ResizeObserver(() => chart.resize()).observe(pieRoot);
@@ -40,28 +41,37 @@
 
   const newsRoot = document.getElementById('jjj-news-ticker');
   if (newsRoot) {
-    const tagMap = { '资源共享': '高校合作', '人才培养': '人才交流', '办学合作': '高校合作', '产教科教融合': '成果转化', '治理机制': '政策发布' };
-    const latest = data.events.slice().sort((a, b) => b.month.localeCompare(a.month) || b.eventId.localeCompare(a.eventId)).slice(0, 8);
-    const itemHtml = event => {
-      const primary = event.scores.slice().sort((a, b) => b.score - a.score)[0];
-      const tag = tagMap[primary.category] || '协同动态';
-      return `<article class="jjj-news-item" title="${event.eventName}"><span class="jjj-news-item__tag jjj-news-item__tag--${tag}">${tag}</span><div><strong>${event.eventName}</strong><small>${event.month} · ${event.region}</small></div></article>`;
-    };
-    newsRoot.innerHTML = `<div class="jjj-news-ticker__track">${latest.map(itemHtml).join('')}${latest.map(itemHtml).join('')}</div>`;
-    let position = 0;
-    let paused = false;
-    const track = newsRoot.firstElementChild;
-    const step = () => {
-      if (!paused && track) {
-        position += 0.25;
-        if (position >= track.scrollHeight / 2) position = 0;
-        newsRoot.scrollTop = position;
-      }
+    const recentNews = window.JJJ_NEWS_DATA;
+    if (!Array.isArray(recentNews)) {
+      newsRoot.textContent = '新闻数据加载失败';
+      console.error('近期新闻数据未加载：window.JJJ_NEWS_DATA 不存在或格式无效。');
+    } else {
+      const latest = recentNews.slice().sort((a, b) => b.date.localeCompare(a.date)).slice(0, 8);
+      const escapeHtml = value => String(value || '').replace(/[&<>'"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[char]));
+      const itemHtml = news => {
+        const url = String(news.url || '').trim();
+        const validUrl = /^https?:\/\//i.test(url);
+        const content = `<span class="jjj-news-item__tag">近期动态</span><div><strong>${escapeHtml(news.title)}</strong><small>${escapeHtml(news.date)}${news.source ? ` · ${escapeHtml(news.source)}` : ''}</small></div>`;
+        return validUrl
+          ? `<a class="jjj-news-item" title="${escapeHtml(news.title)}" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${content}</a>`
+          : `<article class="jjj-news-item jjj-news-item--disabled" title="${escapeHtml(news.title)}">${content}</article>`;
+      };
+      newsRoot.innerHTML = `<div class="jjj-news-ticker__track">${latest.map(itemHtml).join('')}${latest.map(itemHtml).join('')}</div>`;
+      let position = 0;
+      let paused = false;
+      const track = newsRoot.firstElementChild;
+      const step = () => {
+        if (!paused && track) {
+          position += 0.25;
+          if (position >= track.scrollHeight / 2) position = 0;
+          newsRoot.scrollTop = position;
+        }
+        requestAnimationFrame(step);
+      };
+      newsRoot.addEventListener('mouseenter', () => { paused = true; });
+      newsRoot.addEventListener('mouseleave', () => { paused = false; });
       requestAnimationFrame(step);
-    };
-    newsRoot.addEventListener('mouseenter', () => { paused = true; });
-    newsRoot.addEventListener('mouseleave', () => { paused = false; });
-    requestAnimationFrame(step);
+    }
   }
 
   const cloudRoot = document.getElementById('jjj-keyword-cloud');
