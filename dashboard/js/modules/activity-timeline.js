@@ -1,65 +1,51 @@
 (function () {
   'use strict';
   const source = window.EMBEDDED_ACTIVITY_DATA;
-  if (!source || !window.echarts) return;
+  const chartDom = document.getElementById('activity-timeline-chart');
+  if (!source || !window.echarts || !chartDom) return;
 
   const categories = ['资源共享', '人才培养', '办学合作', '产教科教融合', '治理机制'];
   const colors = { 资源共享: '#44d5ff', 人才培养: '#8b8cff', 办学合作: '#f7b84b', 产教科教融合: '#4ee6ad', 治理机制: '#f477b8' };
   const monthly = source.monthly;
-  const events = source.events;
-  const chartDom = document.getElementById('activity-timeline-chart');
-  const rangeDom = document.getElementById('activity-timeline-range');
-  const monthDom = document.getElementById('activity-timeline-month');
-  const slider = document.getElementById('activity-timeline-slider');
-  const labelDom = document.getElementById('activity-timeline-label');
-  const structureDom = document.getElementById('activity-timeline-structure-month');
-  const barsDom = document.getElementById('activity-timeline-bars');
-  const eventsDom = document.getElementById('activity-timeline-events');
-  const eventCountDom = document.getElementById('activity-timeline-event-count');
-  let index = 0, playing = true, timer, chart, observer;
+  let index = 0;
+  let timer;
+  const chart = echarts.init(chartDom);
 
-  const formatMonth = value => `${value.slice(0, 4)}年${value.slice(5)}月`;
-  function renderChart() {
+  const visible = (value, itemIndex) => itemIndex <= index ? value : '-';
+  const formatMonth = month => `${month.slice(0, 4)}年${month.slice(5)}月`;
+  const barColor = itemIndex => itemIndex === index
+    ? new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: '#56d8ff' }, { offset: 1, color: '#0874d4' }])
+    : new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(43,138,255,.76)' }, { offset: 1, color: 'rgba(10,71,158,.62)' }]);
+
+  function render() {
+    const current = monthly[index];
+    const series = [{
+      name: '月度总活跃度', type: 'bar', barMaxWidth: 22, z: 1, animation: false,
+      data: monthly.map((item, itemIndex) => ({ value: visible(item.total, itemIndex), itemStyle: { color: barColor(itemIndex) } })),
+      markLine: { silent: true, symbol: 'none', lineStyle: { color: '#63ddff', width: 2 }, label: { formatter: formatMonth(current.month), color: '#c8f4ff', backgroundColor: 'rgba(3,38,78,.9)', padding: [4, 6] }, data: [{ xAxis: current.month }] }
+    }];
+    categories.forEach(category => series.push({
+      name: category, type: 'line', yAxisIndex: 1, smooth: .28, symbol: 'circle', symbolSize: 4, z: 4,
+      data: monthly.map((item, itemIndex) => visible(item.categories[category] || 0, itemIndex)),
+      lineStyle: { width: 2, color: colors[category], shadowBlur: 7, shadowColor: colors[category] }, itemStyle: { color: colors[category] }
+    }));
     chart.setOption({
-      animationDuration: 160,
-      grid: { left: 42, right: 15, top: 18, bottom: 25 },
-      tooltip: { trigger: 'axis', backgroundColor: 'rgba(2,20,48,.96)', borderColor: '#2a6b96', textStyle: { color: '#eaf4ff' } },
-      xAxis: { type: 'category', data: monthly.map(item => item.month), axisLabel: { color: '#87a8c1', fontSize: 9, interval: 5, formatter: value => value.slice(2) }, axisLine: { lineStyle: { color: '#4e7696' } }, axisTick: { show: false } },
-      yAxis: { type: 'value', axisLabel: { color: '#87a8c1', fontSize: 9 }, splitLine: { lineStyle: { color: 'rgba(78,118,150,.18)' } } },
-      series: [{
-        type: 'line', name: '月度总活跃度', data: monthly.map(item => item.total), smooth: true, symbolSize: 5,
-        lineStyle: { color: '#56d8ff', width: 2 }, itemStyle: { color: '#56d8ff' },
-        areaStyle: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(44, 173, 255, .35)' }, { offset: 1, color: 'rgba(8, 53, 120, .03)' }]) },
-        markPoint: { symbolSize: 0, data: [{ coord: [monthly[index].month, monthly[index].total], label: { show: true, formatter: monthly[index].total.toFixed(1), color: '#fff', backgroundColor: '#168ac0', padding: [3, 5], borderRadius: 3 } }] }
-      }]
+      animationDuration: 100, animationEasing: 'linear',
+      grid: { left: 50, right: 58, top: 35, bottom: 37 },
+      tooltip: { trigger: 'axis', backgroundColor: 'rgba(2,20,48,.96)', borderColor: '#2a6b96', textStyle: { color: '#eaf4ff' }, formatter: rows => `<b>${formatMonth(rows[0].axisValue)}</b><br/>${rows.map(row => `${row.marker}${row.seriesName}：<b>${Number(row.value).toFixed(1)}</b>`).join('<br/>')}` },
+      xAxis: { type: 'category', data: monthly.map(item => item.month), axisLine: { lineStyle: { color: '#70849c' } }, axisLabel: { color: '#d0d8e4', fontSize: 12, interval: 3, formatter: value => value.slice(0, 4) + '-' + value.slice(5) }, axisTick: { show: true, lineStyle: { color: '#70849c' } } },
+      yAxis: [{ type: 'value', name: '总活跃度', nameTextStyle: { color: '#c1ccdb', fontWeight: 'bold' }, splitLine: { lineStyle: { color: 'rgba(32,108,185,.2)' } }, axisLabel: { color: '#c4d2e1', fontSize: 14 } }, { type: 'value', name: '分类得分', nameTextStyle: { color: '#91a8bd' }, splitLine: { show: false }, axisLabel: { color: '#91a8bd' } }],
+      series
     }, { notMerge: true });
   }
-  function renderMonth() {
-    const row = monthly[index];
-    monthDom.textContent = formatMonth(row.month); labelDom.textContent = row.month; structureDom.textContent = `${formatMonth(row.month)} · 五维结构`; slider.value = index;
-    const max = Math.max(...categories.map(category => row.categories[category]));
-    barsDom.innerHTML = categories.map(category => `<div class="jjj-activity-timeline__bar"><span>${category === '产教科教融合' ? '产教融合' : category}</span><i><b style="width:${max ? row.categories[category] / max * 100 : 0}%;background:${colors[category]}"></b></i><em>${row.categories[category].toFixed(1)}</em></div>`).join('');
-    const currentEvents = events.filter(event => event.month === row.month);
-    eventCountDom.textContent = `${currentEvents.length} 条`;
-    eventsDom.innerHTML = (currentEvents.length ? currentEvents : [{ eventName: '本月暂无可展示的协同事件', subject: '—' }]).map(event => `<article class="jjj-activity-timeline__event"><strong title="${event.eventName}">${event.eventName}</strong><span>${event.subject || '—'}</span></article>`).join('');
-    renderChart();
-  }
-  function stop() { clearInterval(timer); }
-  function start() { stop(); if (playing) timer = setInterval(() => { index = (index + 1) % monthly.length; renderMonth(); }, 850); }
-  function init() {
-    rangeDom.textContent = `（${formatMonth(monthly[0].month)}–${formatMonth(monthly.at(-1).month)}）`;
-    slider.max = monthly.length - 1;
-    chart = echarts.init(chartDom);
-    window.DashboardCharts = window.DashboardCharts || {}; window.DashboardCharts.activityTimeline = chart;
-    observer = new ResizeObserver(() => chart.resize()); observer.observe(chartDom);
-    chart.on('click', params => { if (params.dataIndex != null) { index = params.dataIndex; renderMonth(); } });
-    chart.on('mouseover', () => stop()); chart.on('mouseout', () => start());
-    document.getElementById('activity-timeline-prev').onclick = () => { index = (index - 1 + monthly.length) % monthly.length; renderMonth(); };
-    document.getElementById('activity-timeline-next').onclick = () => { index = (index + 1) % monthly.length; renderMonth(); };
-    document.getElementById('activity-timeline-play').onclick = event => { playing = !playing; event.currentTarget.textContent = playing ? 'Ⅱ' : '▶'; start(); };
-    slider.oninput = event => { index = Number(event.target.value); renderMonth(); };
-    renderMonth(); start();
-  }
-  window.DashboardModules = window.DashboardModules || {}; window.DashboardModules.initActivityTimeline = init;
-  init();
+
+  function start() { clearInterval(timer); timer = setInterval(() => { index = (index + 1) % monthly.length; render(); }, 300); }
+  chart.on('mouseover', () => clearInterval(timer));
+  chart.on('mouseout', start);
+  chart.on('click', params => { if (params.dataIndex != null) { index = params.dataIndex; render(); start(); } });
+  new ResizeObserver(() => chart.resize()).observe(chartDom);
+  window.DashboardCharts = window.DashboardCharts || {};
+  window.DashboardCharts.activityTimeline = chart;
+  render();
+  start();
 }());

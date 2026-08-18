@@ -5,35 +5,36 @@
   if (!data) return;
 
   // 逐项录入用户提供的“协同领域分类结果”Excel（Sheet1）统计值。
-  // 保留事件数量排名前四的分类，其余四类合并展示为“其他”。
+  // 2026 年 1—7 月五维月度平均得分占比（来自月度活跃度数据）。
   const totals = [
-    ['科技创新协同', 312, '#18baf3'], ['产业协同', 132, '#9068dd'],
-    ['办学合作协同', 126, '#3eb576'], ['人才协同', 122, '#ff9410'],
-    ['其他', 96 + 55 + 22 + 1, '#b7babd']
+    ['资源共享', 20.214, '#18baf3'], ['人才培养', 13.914, '#9068dd'],
+    ['办学合作', 13.914, '#3eb576'], ['产教科教融合', 48.586, '#ff9410'],
+    ['治理机制', 30.029, '#ffd51a']
   ];
   const totalEvents = totals.reduce((sum, [, value]) => sum + value, 0);
-  const chartData = totals.map(([name, value, color]) => ({ name, value, percent: value / totalEvents * 100, itemStyle: { color } }));
+  const chartData = totals.map(([name, value, color]) => ({
+    name, value, percent: value / totalEvents * 100, itemStyle: { color },
+    labelLine: { lineStyle: { color, width: 1.5 } }
+  }));
 
   const pieRoot = document.getElementById('jjj-category-pie');
   if (pieRoot && window.echarts) {
     const chart = window.echarts.init(pieRoot, null, { renderer: 'canvas' });
     chart.setOption({
-      tooltip: { trigger: 'item', formatter: params => `${params.name}<br/>${params.data.value} 条事件（${params.data.percent.toFixed(2)}%）` },
+      tooltip: { trigger: 'item', formatter: params => `${params.name}<br/>2026 年月度平均得分：${params.data.value.toFixed(2)}<br/>占比：${params.data.percent.toFixed(2)}%` },
       title: {
-        text: '事件分类', left: '31%', top: '42%', textAlign: 'center',
+        text: '五维占比', left: '47%', top: '42%', textAlign: 'center',
         textStyle: { color: '#eff8ff', fontSize: 17, fontWeight: 700, lineHeight: 25 }
       },
-      legend: {
-        orient: 'vertical', right: 7, top: 'middle', itemWidth: 8, itemHeight: 8, itemGap: 8,
-        textStyle: { color: '#c4ddec', fontSize: 10 },
-        formatter: name => {
-          const item = chartData.find(entry => entry.name === name);
-          return `${name}  ${item.percent.toFixed(2)}%`;
-        }
-      },
       series: [{
-        type: 'pie', radius: ['48%', '72%'], center: ['31%', '52%'], avoidLabelOverlap: true,
-        itemStyle: { borderColor: '#0a203e', borderWidth: 3 }, label: { show: false }, data: chartData
+        type: 'pie', radius: ['40%', '58%'], center: ['47%', '52%'], avoidLabelOverlap: false,
+        itemStyle: { borderColor: '#0a203e', borderWidth: 3 },
+        label: { show: true, color: '#d9ebf8', fontSize: 9, formatter: params => `${params.name} ${params.percent.toFixed(2)}%` },
+        labelLine: { show: true, length: 6, length2: 10, lineStyle: { width: 1.5 } },
+        labelLayout: params => params.labelRect.x < params.rect.x
+          ? { x: 12, align: 'left', moveOverlap: 'shiftY' }
+          : { moveOverlap: 'shiftY' },
+        data: chartData
       }]
     });
     new ResizeObserver(() => chart.resize()).observe(pieRoot);
@@ -57,20 +58,27 @@
           : `<article class="jjj-news-item jjj-news-item--disabled" title="${escapeHtml(news.title)}">${content}</article>`;
       };
       newsRoot.innerHTML = `<div class="jjj-news-ticker__track">${latest.map(itemHtml).join('')}${latest.map(itemHtml).join('')}</div>`;
-      let position = 0;
-      let paused = false;
       const track = newsRoot.firstElementChild;
-      const step = () => {
-        if (!paused && track) {
-          position += 0.25;
-          if (position >= track.scrollHeight / 2) position = 0;
-          newsRoot.scrollTop = position;
+      const itemHeight = 64;
+      let itemIndex = 0;
+      let paused = false;
+      const move = () => {
+        if (paused || !track) return;
+        itemIndex += 1;
+        track.style.transition = 'transform .55s ease';
+        track.style.transform = `translateY(-${itemIndex * itemHeight}px)`;
+        if (itemIndex === latest.length) {
+          window.setTimeout(() => {
+            track.style.transition = 'none';
+            track.style.transform = 'translateY(0)';
+            itemIndex = 0;
+          }, 580);
         }
-        requestAnimationFrame(step);
       };
+      const timer = window.setInterval(move, 1000);
       newsRoot.addEventListener('mouseenter', () => { paused = true; });
       newsRoot.addEventListener('mouseleave', () => { paused = false; });
-      requestAnimationFrame(step);
+      window.addEventListener('pagehide', () => window.clearInterval(timer), { once: true });
     }
   }
 

@@ -16,6 +16,7 @@
     '产教科教融合': '产教融合', '治理机制': '治理机制'
   };
   const topEvents = activityData.events
+    .filter(event => event.month.startsWith('2026-'))
     .map(event => ({
       title: event.eventName,
       date: event.month,
@@ -24,15 +25,24 @@
     .sort((a, b) => b.score - a.score || b.date.localeCompare(a.date) || a.title.localeCompare(b.title, 'zh-CN'))
     .slice(0, 3)
     .map((event, index) => ({ ...event, rank: index + 1 }));
+  const cleanTitle = value => String(value).replace(/[\s，、。；：！？“”‘’（）()《》\-—]/g, '');
+  const findNewsUrl = title => {
+    const target = cleanTitle(title);
+    const match = (window.JJJ_NEWS_DATA || []).find(news => {
+      const candidate = cleanTitle(news.title);
+      return candidate === target || candidate.includes(target) || target.includes(candidate);
+    });
+    return /^https?:\/\//i.test(String(match?.url || '')) ? match.url : '';
+  };
 
   eventsRoot.innerHTML = topEvents.map(item => `
-    <article class="jjj-top-event" title="${item.title}">
+    ${findNewsUrl(item.title) ? `<a class="jjj-top-event" title="${item.title}" href="${findNewsUrl(item.title)}" target="_blank" rel="noopener noreferrer">` : `<article class="jjj-top-event" title="${item.title}">`}
       <span class="jjj-top-event__rank">TOP${item.rank}</span>
       <div>
         <span class="jjj-top-event__title">${item.title}</span>
         <div class="jjj-top-event__meta"><span>${item.date}</span></div>
       </div>
-    </article>`).join('');
+    ${findNewsUrl(item.title) ? '</a>' : '</article>'}`).join('');
 
   kpiRoot.innerHTML = data.kpiCards.map(card => {
     if (card.type === 'regions') {

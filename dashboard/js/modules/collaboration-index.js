@@ -16,7 +16,8 @@
     const tooltip = root.querySelector('.collab-index-tooltip');
     const modal = root.querySelector('.collab-index-modal');
     trendPanel.querySelector('.collab-index-section-head h2').textContent = '京津冀教育协同度指数';
-    const legendLabels = ['京津冀教育协同发展指数', '北京', '天津', '河北'];
+    trendPanel.querySelector('.collab-index-hint')?.remove();
+    const legendLabels = ['京津冀总体', '北京', '天津', '河北'];
     trendPanel.querySelectorAll('.collab-index-legend span').forEach((item, index) => {
       const marker = item.querySelector('i');
       item.replaceChildren(marker, document.createTextNode(legendLabels[index] || ''));
@@ -39,7 +40,19 @@
       #collab-index-host .collab-index-axis { font-size:13px !important; }
       #collab-index-host .collab-index-modal { z-index:1100; }
     </style>${root.outerHTML}`;
-    const code = source.code.replaceAll('jjj-education-dashboard', 'collab-index-dashboard').replaceAll('jjj-', 'collab-index-');
+    const code = source.code
+      .replace('const root =', `DATA.regions.forEach(region => {
+        const base = DATA.annual[region][0];
+        DATA.annual[region] = DATA.annual[region].map(value => value / base * 100);
+      });
+      const root =`)
+      .replace(
+        /const W = 960, H = 430, L = 58, R = 24, T = 38, B = 54, pw = W - L - R, ph = H - T - B, n = DATA\.years\.length, x = i => L \+ \(i \+ \.5\) \* pw \/ n, y = v => T \+ ph - v \/ 100 \* ph;/,
+        'const W = 960, H = 430, L = 58, R = 24, T = 38, B = 54, pw = W - L - R, ph = H - T - B, n = DATA.years.length, chartMax = Math.max(120, Math.ceil(Math.max(...Object.values(DATA.annual).flat()) / 20) * 20), tickStep = chartMax / 5, x = i => L + (i + .5) * pw / n, y = v => T + ph - v / chartMax * ph;'
+      )
+      .replace('[0, 20, 40, 60, 80, 100].forEach(v => {', 'Array.from({ length: 6 }, (_, i) => i * tickStep).forEach(v => {')
+      .replaceAll('jjj-education-dashboard', 'collab-index-dashboard')
+      .replaceAll('jjj-', 'collab-index-');
     new Function(code)();
   } catch (error) {
     host.textContent = '协同指数模块加载失败。';
