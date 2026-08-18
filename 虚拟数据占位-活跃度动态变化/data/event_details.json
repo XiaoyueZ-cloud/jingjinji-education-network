@@ -1,0 +1,7 @@
+[
+  {"eventId":"E00018","month":"2024-02","eventName":"京津冀高校联合建设综合实验基地","subject":"京津冀三地高校","region":"京津冀","source":"虚拟新闻来源","scores":[{"category":"资源共享","subcategory":"基地设施共享","score":5,"reason":"共建实验平台"},{"category":"人才培养","subcategory":"联合培养","score":5,"reason":"共同制定培养方案"},{"category":"办学合作","subcategory":"校际合作协议","score":3,"reason":"签署合作协议"}]},
+  {"eventId":"E00019","month":"2024-02","eventName":"三地教育部门联合发布课程资源共享计划","subject":"三地教育部门","region":"京津冀","source":"虚拟新闻来源","scores":[{"category":"资源共享","subcategory":"课程资源共享","score":7,"reason":"开放优质课程"},{"category":"治理机制","subcategory":"联席协调机制","score":6,"reason":"建立常态化协调机制"}]},
+  {"eventId":"E00020","month":"2024-02","eventName":"京津冀职业院校推进产教融合实训项目","subject":"职业院校与企业","region":"京津冀","source":"虚拟新闻来源","scores":[{"category":"办学合作","subcategory":"校企合作","score":12,"reason":"校企联合实施项目"},{"category":"产教科教融合","subcategory":"实训基地共建","score":4,"reason":"建设实训场地"}]},
+  {"eventId":"E00021","month":"2024-03","eventName":"京津冀高校协同创新联盟召开年度会议","subject":"协同创新联盟","region":"京津冀","source":"虚拟新闻来源","scores":[{"category":"治理机制","subcategory":"协同治理","score":11,"reason":"完善联盟治理规则"},{"category":"人才培养","subcategory":"师资交流","score":9,"reason":"推进教师互访"}]},
+  {"eventId":"E00022","month":"2024-06","eventName":"三地高校发布跨区域联合招生培养项目","subject":"多所高校","region":"京津冀","source":"虚拟新闻来源","scores":[{"category":"人才培养","subcategory":"联合培养","score":18,"reason":"实施跨校培养"},{"category":"办学合作","subcategory":"专业共建","score":15,"reason":"共建特色专业"}]}
+]
