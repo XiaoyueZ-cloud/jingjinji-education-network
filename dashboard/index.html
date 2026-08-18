@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>京津冀教育协同监测系统</title>
+  <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+  <main id="jjj-dashboard" class="jjj-dashboard" aria-label="京津冀教育协同监测系统">
+    <header class="jjj-dashboard__header">
+      <div>
+        <p class="jjj-dashboard__eyebrow">BEIJING · TIANJIN · HEBEI</p>
+        <h1>京津冀教育协同发展监测平台</h1>
+        <p class="jjj-dashboard__subtitle">教育 · 科技 · 人才协同发展数据监测</p>
+      </div>
+    </header>
+
+    <section class="jjj-dashboard__main" aria-label="监测模块">
+      <aside class="jjj-dashboard__column jjj-dashboard__column--left">
+        <section class="jjj-module jjj-module--pie" id="category-pie-module">
+          <header class="jjj-module__header"><p>协同结构</p><h2>协同领域分类</h2></header>
+          <div class="jjj-category-pie" id="jjj-category-pie" aria-label="协同领域分类环形图"></div>
+        </section>
+        <section class="jjj-module jjj-module--top-events" id="top-events-module">
+          <header class="jjj-module__header"><p>重点事件</p><h2>TOP3 协同事件</h2></header>
+          <div class="jjj-top-events" id="jjj-top-events"></div>
+        </section>
+        <section class="jjj-module jjj-module--news" id="news-ticker-module">
+          <header class="jjj-module__header"><p>动态追踪</p><h2>近期新闻</h2></header>
+          <div class="jjj-news-ticker" id="jjj-news-ticker" aria-label="近期协同新闻"></div>
+        </section>
+        <section class="jjj-module jjj-module--cloud" id="keyword-cloud-module">
+          <header class="jjj-module__header"><p>热点聚焦</p><h2>协同关键词</h2></header>
+          <div class="jjj-keyword-cloud" id="jjj-keyword-cloud" aria-label="协同关键词词云"></div>
+        </section>
+      </aside>
+
+      <section class="jjj-dashboard__column jjj-dashboard__column--center">
+        <section class="jjj-module jjj-module--map" id="activity-map-module">
+          <div class="jjj-activity-map__layout">
+            <aside class="jjj-activity-map__dimensions" aria-label="五维度活跃度指数">
+              <h2>五维度活跃度指数</h2>
+              <div class="jjj-activity-map__dimension-grid jjj-activity-map__dimension-grid--header"><span></span><span>北京</span><span>天津</span><span>河北</span></div>
+              <div id="activity-map-dimensions"></div>
+            </aside>
+            <section class="jjj-activity-map__map-panel">
+              <div class="jjj-activity-map__canvas" id="activity-map-chart" aria-label="京津冀五维活跃度地图"></div>
+            </section>
+          </div>
+        </section>
+        <section class="jjj-module jjj-module--timeline" id="activity-timeline-module">
+          <header class="jjj-activity-timeline__header"><div><p>动态演变</p><h2>月度活跃度指数 <span id="activity-timeline-range"></span></h2></div><div class="jjj-activity-timeline__now"><strong id="activity-timeline-month">--</strong><small>当前播放月份</small></div></header>
+          <div class="jjj-activity-timeline__chart" id="activity-timeline-chart"></div>
+          <div class="jjj-activity-timeline__controls"><button id="activity-timeline-prev" aria-label="上一个月">‹</button><button id="activity-timeline-play" aria-label="暂停播放">Ⅱ</button><button id="activity-timeline-next" aria-label="下一个月">›</button><input id="activity-timeline-slider" type="range" min="0" max="0" value="0"><span id="activity-timeline-label">--</span></div>
+          <div class="jjj-activity-timeline__bottom"><section><h3 id="activity-timeline-structure-month">--</h3><div id="activity-timeline-bars"></div></section><section><h3>本月协同事件 <span id="activity-timeline-event-count">0 条</span></h3><div class="jjj-activity-timeline__events" id="activity-timeline-events"></div></section></div>
+        </section>
+      </section>
+
+      <aside class="jjj-dashboard__column jjj-dashboard__column--right">
+        <section class="jjj-module jjj-module--index" id="collab-index-module">
+          <div class="collab-index-host" id="collab-index-host" aria-label="京津冀教育协同指数"></div>
+        </section>
+        <section class="jjj-module jjj-module--network" id="cooperation-network-module">
+          <header class="jjj-module__header jjj-network__header"><div><p>关系洞察</p><h2>合作网络</h2></div><a class="jjj-network__detail-link" href="assets/cooperation-network.html" target="_blank" rel="noopener">查看详细网络 ↗</a></header>
+          <div class="jjj-network-frame">
+            <iframe src="assets/cooperation-network.html?mode=dashboard" title="京津冀教育科技人才合作网络" loading="eager"></iframe>
+          </div>
+        </section>
+      </aside>
+    </section>
+  </main>
+  <script src="assets/echarts.min.js"></script>
+  <script src="assets/jjj-geo.js"></script>
+  <script src="js/dashboard-data.js"></script>
+  <script src="js/modules/activity-map.js"></script>
+  <script src="data/activity-timeline-data.js"></script>
+  <script src="js/modules/activity-timeline.js"></script>
+  <script src="assets/collaboration-index-source.js"></script>
+  <script src="js/modules/collaboration-index.js"></script>
+  <script src="js/dashboard.js"></script>
+  <script src="js/modules/left-insights.js"></script>
+</body>
+</html>
