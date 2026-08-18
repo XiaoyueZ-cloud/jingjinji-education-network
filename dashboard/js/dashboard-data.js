@@ -1,4 +1,11 @@
 window.DashboardData = {
+  kpiCards: [
+    { type: 'index', label: '教育协同活跃度指数（2026年7月）', value: '70.7', note: '较上月', delta: '-49.7', direction: 'down', trend: [210.2, 273.2, 120.4, 70.7] },
+    { type: 'events', label: '协同事件总数（累计）', value: '866' },
+    { type: 'subjects', label: '参与主体总数（累计）', value: '378' },
+    { type: 'relations', label: '跨省（市）协同关系', value: '1,553', subLabel: '累计权重', subValue: '2,635' },
+    { type: 'regions', label: '京津冀三地事件占比（累计）', regions: [['北京', '48.9%'], ['天津', '19.6%'], ['河北', '31.4%']] }
+  ],
   kpi: [
     { label: '有效协同事件', value: '516', note: '真实评分事件库' },
     { label: '五维综合活跃度', value: '79.0', note: '三地平均值' },
