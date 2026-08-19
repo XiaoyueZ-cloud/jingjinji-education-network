@@ -12,7 +12,6 @@
       <div>
         <p class="jjj-dashboard__eyebrow">BEIJING · TIANJIN · HEBEI</p>
         <h1>京津冀教育协同发展监测平台</h1>
-        <p class="jjj-dashboard__subtitle">教育 · 科技 · 人才协同发展数据监测</p>
       </div>
     </header>
 
@@ -20,21 +19,21 @@
 
     <section class="jjj-dashboard__main" aria-label="监测模块">
       <aside class="jjj-dashboard__column jjj-dashboard__column--left">
-        <section class="jjj-module jjj-module--pie" id="category-pie-module">
-          <header class="jjj-module__header"><p>协同结构</p><h2>协同领域分类</h2></header>
-          <div class="jjj-category-pie" id="jjj-category-pie" aria-label="协同领域分类环形图"></div>
-        </section>
         <section class="jjj-module jjj-module--top-events" id="top-events-module">
           <header class="jjj-module__header"><p>重点事件</p><h2>TOP3 协同事件</h2></header>
           <div class="jjj-top-events" id="jjj-top-events"></div>
         </section>
-        <section class="jjj-module jjj-module--news" id="news-ticker-module">
-          <header class="jjj-module__header"><p>动态追踪</p><h2>近期新闻</h2></header>
-          <div class="jjj-news-ticker" id="jjj-news-ticker" aria-label="近期协同新闻"></div>
+        <section class="jjj-module jjj-module--pie" id="category-pie-module">
+          <header class="jjj-module__header"><p>协同结构</p><h2>协同事件类别</h2></header>
+          <div class="jjj-category-pie" id="jjj-category-pie" aria-label="协同事件类别环形图"></div>
         </section>
         <section class="jjj-module jjj-module--cloud" id="keyword-cloud-module">
           <header class="jjj-module__header"><p>热点聚焦</p><h2>协同关键词</h2></header>
           <div class="jjj-keyword-cloud" id="jjj-keyword-cloud" aria-label="协同关键词词云"></div>
+        </section>
+        <section class="jjj-module jjj-module--news" id="news-ticker-module">
+          <header class="jjj-module__header"><p>动态追踪</p><h2>近期新闻</h2></header>
+          <div class="jjj-news-ticker" id="jjj-news-ticker" aria-label="近期协同新闻"></div>
         </section>
       </aside>
 
@@ -52,10 +51,8 @@
           </div>
         </section>
         <section class="jjj-module jjj-module--timeline" id="activity-timeline-module">
-          <header class="jjj-activity-timeline__header"><div><p>动态演变</p><h2>月度活跃度指数 <span id="activity-timeline-range"></span></h2></div><div class="jjj-activity-timeline__now"><strong id="activity-timeline-month">--</strong><small>当前播放月份</small></div></header>
+          <header class="jjj-activity-timeline__header"><div><p>动态演变</p><h2>月度活跃度指数</h2></div></header>
           <div class="jjj-activity-timeline__chart" id="activity-timeline-chart"></div>
-          <div class="jjj-activity-timeline__controls"><button id="activity-timeline-prev" aria-label="上一个月">‹</button><button id="activity-timeline-play" aria-label="暂停播放">Ⅱ</button><button id="activity-timeline-next" aria-label="下一个月">›</button><input id="activity-timeline-slider" type="range" min="0" max="0" value="0"><span id="activity-timeline-label">--</span></div>
-          <div class="jjj-activity-timeline__bottom"><section><h3 id="activity-timeline-structure-month">--</h3><div id="activity-timeline-bars"></div></section><section><h3>本月协同事件 <span id="activity-timeline-event-count">0 条</span></h3><div class="jjj-activity-timeline__events" id="activity-timeline-events"></div></section></div>
         </section>
       </section>
 
