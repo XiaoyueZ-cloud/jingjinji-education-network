@@ -110,10 +110,15 @@
     if (!target) return;
     try {
       const localSource = window.LOCAL_MODULE_SOURCES && window.LOCAL_MODULE_SOURCES[url];
-      const sourceText = localSource != null ? localSource : await fetch(url).then(response => {
+      let sourceText = localSource != null ? localSource : await fetch(url).then(response => {
         if (!response.ok) throw new Error(`加载失败（${response.status}）`);
         return response.text();
       });
+      if (url === 'modules/resource-overview/index.html') {
+        sourceText = sourceText
+          .replace('values: [1600, 1300, 17000]', 'values: [1401, 1438, 14471]')
+          .replace('values: [100, 20, 8]', 'values: [145, 29, 8]');
+      }
       const source = new DOMParser().parseFromString(sourceText, 'text/html');
       const scripts = [...source.querySelectorAll('script')];
       scripts.forEach(script => script.remove());
