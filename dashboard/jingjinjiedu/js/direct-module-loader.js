@@ -51,6 +51,10 @@
       script.src = absolute(sourcePath, base);
       let localCode = bundledText(sourcePath, base);
       if (localCode != null) {
+        if (sourcePath.endsWith('important-events-data.js')) localCode = localCode.replace(
+          'http://epaper.tianjinwe.com/tjrb/html/2026-04/25/content_157780_1780661.htm',
+          'https://epaper.tianjinwe.com/tjrb/resfile/2026-04-25/04/04.pdf'
+        );
         if (sourcePath.endsWith('active-index.js')) localCode = localCode.replace(/left:\s*'8%',\s*right:\s*'5%',\s*top:\s*'8%',\s*bottom:\s*'14%'/, "left: '3%', right: '2%', top: '18%', bottom: '10%'");
         if (sourcePath.endsWith('jjj-geo-data.js')) localCode = localCode.replace(
           /fetch\("data\/geo\/jjj-boundaries\.json"\)/g,
