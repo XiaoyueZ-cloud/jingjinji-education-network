@@ -1,0 +1,433 @@
+/**
+ * jjj-resource-detail.css
+ * 京津冀三地资源分布概览 — 地图 + 区域柱状图
+ * CSS Namespace: jjj-resource-detail__
+ */
+
+:root {
+  --jjj-bg: #050d26;
+  --jjj-panel: #081a42;
+  --jjj-line: rgba(43, 184, 255, .42);
+  --jjj-cyan: #29e5ff;
+  --jjj-blue: #1d87ff;
+  --jjj-text: #e9f8ff;
+  --jjj-muted: #80a9cd;
+  --jjj-yellow: #ffe949;
+  --jjj-green: #25e4ae;
+  --jjj-beijing: #ff8a1f;
+  --jjj-tianjin: #15b9e8;
+  --jjj-hebei: #6fa94f;
+}
+
+/* 根容器 */
+.jjj-resource-detail {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(135deg, rgba(10, 34, 79, .97), rgba(5, 21, 54, .96));
+  border: 1px solid var(--jjj-line);
+  clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+  font-family: "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  color: var(--jjj-text);
+  overflow: hidden;
+  position: relative;
+}
+
+/* 顶部装饰线 */
+.jjj-resource-detail::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 3;
+  width: 76px;
+  height: 3px;
+  background: var(--jjj-cyan);
+  box-shadow: 0 0 10px var(--jjj-cyan);
+}
+
+/* Header */
+.jjj-resource-detail__header {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 0 16px;
+  border-bottom: 1px solid rgba(41, 158, 255, .25);
+  background: linear-gradient(90deg, rgba(20, 105, 195, .55), rgba(9, 34, 81, .22) 55%, transparent);
+  flex-shrink: 0;
+}
+
+.jjj-resource-detail__title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: .5px;
+  white-space: nowrap;
+}
+
+.jjj-resource-detail__title-en {
+  font-family: Rajdhani, sans-serif;
+  color: #78a8d6;
+  letter-spacing: 1px;
+  font-size: 10px;
+  font-weight: 400;
+}
+
+.jjj-resource-detail__toolbar {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.jjj-resource-detail__select {
+  appearance: none;
+  border: 1px solid rgba(46, 182, 255, .55);
+  background: #092858;
+  color: #dff7ff;
+  padding: 4px 24px 4px 8px;
+  outline: none;
+  font-size: 11px;
+  font-family: inherit;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23b8c7d9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 6px center;
+}
+
+.jjj-resource-detail__select:hover {
+  border-color: var(--jjj-cyan);
+}
+
+.jjj-resource-detail__btn {
+  border: 1px solid rgba(42, 226, 197, .42);
+  background: rgba(9, 101, 93, .18);
+  color: #7ff3d8;
+  font-size: 10px;
+  padding: 3px 7px;
+  cursor: pointer;
+  font-family: inherit;
+  white-space: nowrap;
+  transition: border-color .16s, color .16s, background .16s;
+}
+
+.jjj-resource-detail__btn:hover {
+  border-color: rgba(127, 243, 216, .8);
+  color: #d9fff5;
+  background: rgba(12, 124, 114, .3);
+}
+
+/* Body */
+.jjj-resource-detail__body {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  overflow: hidden;
+}
+
+/* 左侧地图区 */
+.jjj-resource-detail__map-zone {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  border-right: 1px solid rgba(41, 158, 255, .22);
+}
+
+/* 指标选项卡栏 */
+.jjj-resource-detail__tabs-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 8px 14px;
+  border-bottom: 1px solid rgba(41, 158, 255, .2);
+  background: rgba(3, 20, 51, .45);
+  flex-shrink: 0;
+}
+
+.jjj-resource-detail__tab {
+  border: 1px solid rgba(42, 152, 226, .3);
+  background: rgba(14, 57, 116, .43);
+  color: #8db8dc;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 11px;
+  padding: 5px 12px;
+  transition: all .16s ease;
+  white-space: nowrap;
+}
+
+.jjj-resource-detail__tab:hover {
+  color: #e7faff;
+  border-color: rgba(41, 229, 255, .52);
+}
+
+.jjj-resource-detail__tab--active {
+  color: #fff;
+  background: linear-gradient(90deg, #0f77d1, #0c4aaf);
+  border-color: #3ddcff;
+  box-shadow: 0 0 9px rgba(40, 206, 255, .3);
+}
+
+/* 子选项下拉 */
+.jjj-resource-detail__tab-wrap {
+  display: inline-flex;
+  align-items: stretch;
+  gap: 0;
+}
+
+.jjj-resource-detail__tab-wrap .jjj-resource-detail__tab {
+  border-radius: 2px 0 0 2px;
+  border-right: none;
+}
+
+.jjj-resource-detail__sub-select {
+  appearance: none;
+  border: 1px solid rgba(42, 152, 226, .3);
+  background: rgba(14, 57, 116, .6);
+  color: #8db8dc;
+  padding: 4px 20px 4px 6px;
+  font-size: 11px;
+  font-family: inherit;
+  cursor: pointer;
+  outline: none;
+  border-radius: 0 2px 2px 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5'%3E%3Cpath d='M0 0l4 5 4-5z' fill='%238db8dc'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 5px center;
+  transition: border-color .16s, color .16s;
+}
+
+.jjj-resource-detail__sub-select:hover,
+.jjj-resource-detail__sub-select:focus {
+  border-color: rgba(41, 229, 255, .55);
+  color: #e7faff;
+}
+
+.jjj-resource-detail__tab-wrap .jjj-resource-detail__tab--active + .jjj-resource-detail__sub-select {
+  border-color: #3ddcff;
+  color: #fff;
+  background-color: rgba(14, 57, 116, .8);
+}
+
+/* 地图 */
+.jjj-resource-detail__map-wrap {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+}
+
+.jjj-resource-detail__map-chart {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+
+/* 右侧区域 */
+.jjj-resource-detail__side {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  padding: 12px;
+  background: rgba(4, 23, 59, .42);
+}
+
+.jjj-resource-detail__side-heading {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 7px 10px 7px 12px;
+  border: 1px solid rgba(45, 167, 236, .28);
+  border-left: 2px solid var(--jjj-cyan);
+  background: linear-gradient(100deg, rgba(15, 74, 138, .5), rgba(8, 37, 81, .4));
+  box-shadow: inset 0 0 16px rgba(22, 132, 207, .07);
+  flex-shrink: 0;
+}
+
+.jjj-resource-detail__side-heading label {
+  color: #e8f9ff;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .8px;
+}
+
+.jjj-resource-detail__side-heading small {
+  color: #527fa8;
+  font-size: 9px;
+  letter-spacing: 1.2px;
+}
+
+.jjj-resource-detail__side-heading span {
+  font-size: 10px;
+  color: var(--jjj-cyan);
+  padding: 2px 6px;
+  border: 1px solid rgba(41, 229, 255, .34);
+  background: rgba(5, 63, 113, .38);
+}
+
+/* 区域选择器 */
+.jjj-resource-detail__region-select-wrap {
+  position: relative;
+  margin-top: 10px;
+  flex-shrink: 0;
+}
+
+/* 统计指标说明 */
+.jjj-resource-detail__indicator {
+  margin-top: 8px;
+  padding: 6px 10px;
+  border-left: 2px solid var(--jjj-cyan);
+  background: rgba(5, 63, 113, .2);
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.jjj-resource-detail__indicator-label {
+  color: #7aa5c9;
+  font-size: 10px;
+  letter-spacing: .5px;
+  white-space: nowrap;
+}
+
+.jjj-resource-detail__indicator-value {
+  color: var(--jjj-cyan);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.jjj-resource-detail__region-select {
+  width: 100%;
+  height: 48px;
+  appearance: none;
+  -webkit-appearance: none;
+  padding: 0 44px 0 14px;
+  border: 1px solid rgba(46, 182, 255, .5);
+  border-radius: 2px;
+  outline: none;
+  background: linear-gradient(110deg, rgba(13, 73, 140, .84), rgba(7, 38, 83, .94));
+  color: #e7f8ff;
+  font: 600 12px "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  letter-spacing: .5px;
+  cursor: pointer;
+  box-shadow: inset 0 0 16px rgba(27, 137, 211, .09);
+  transition: border-color .18s, box-shadow .18s;
+}
+
+.jjj-resource-detail__region-select:hover,
+.jjj-resource-detail__region-select:focus {
+  border-color: var(--jjj-cyan);
+  box-shadow: inset 0 0 18px rgba(41, 229, 255, .1), 0 0 9px rgba(41, 229, 255, .15);
+}
+
+.jjj-resource-detail__region-select option {
+  background: #092858;
+  color: #e7f8ff;
+}
+
+.jjj-resource-detail__region-arrow {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  width: 23px;
+  height: 23px;
+  pointer-events: none;
+  transform: translateY(-50%);
+  border: 1px solid rgba(41, 229, 255, .3);
+  background: rgba(8, 62, 119, .6);
+}
+
+.jjj-resource-detail__region-arrow::before,
+.jjj-resource-detail__region-arrow::after {
+  content: "";
+  position: absolute;
+  top: 10px;
+  width: 7px;
+  height: 2px;
+  border-radius: 2px;
+  background: #9cedff;
+  box-shadow: 0 0 4px rgba(41, 229, 255, .35);
+}
+
+.jjj-resource-detail__region-arrow::before {
+  left: 4px;
+  transform: rotate(40deg);
+  transform-origin: right center;
+}
+
+.jjj-resource-detail__region-arrow::after {
+  right: 4px;
+  transform: rotate(-40deg);
+  transform-origin: left center;
+}
+
+/* 对比标题 */
+.jjj-resource-detail__compare-title {
+  margin-top: 12px;
+  height: 31px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #d7f4ff;
+  font-weight: 600;
+  font-size: 12px;
+  border-top: 1px solid rgba(46, 182, 255, .17);
+  padding-top: 7px;
+  flex-shrink: 0;
+}
+
+.jjj-resource-detail__compare-title span {
+  font-size: 10px;
+  color: #73a6ce;
+  font-weight: 400;
+}
+
+/* 柱状图容器 */
+.jjj-resource-detail__bar-chart {
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+}
+
+/* 底部洞察 */
+.jjj-resource-detail__insight {
+  padding: 7px 16px;
+  border-top: 1px solid rgba(41, 158, 255, .2);
+  background: rgba(8, 62, 119, .19);
+  color: #8db7d7;
+  font-size: 11px;
+  line-height: 1.6;
+  flex-shrink: 0;
+}
+
+.jjj-resource-detail__insight strong {
+  color: #dff9ff;
+}
+
+/* 响应式 */
+@media (max-width: 1000px) {
+  .jjj-resource-detail__body {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr auto;
+  }
+
+  .jjj-resource-detail__map-zone {
+    border-right: none;
+    border-bottom: 1px solid rgba(41, 158, 255, .22);
+  }
+
+  .jjj-resource-detail__side {
+    max-height: 220px;
+  }
+}

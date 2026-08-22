@@ -1,0 +1,10 @@
+<link rel="stylesheet" href="stage-share.css">
+<section id="stage-share-panel" class="dashboard-panel stage-share-panel">
+  <header class="panel-header"><h2 class="panel-title">分学段协同事件占比</h2><div class="panel-actions"></div></header>
+  <div class="panel-body"><div class="chart-container"></div></div>
+</section>
+<script>window.DashboardModules=window.DashboardModules||{items:{},register(n,m){this.items[n]=m},get(n){return this.items[n]}};</script>
+<script src="../vendor/echarts.min.js"></script>
+<script src="stage-share-data.js"></script>
+<script src="stage-share.js"></script>
+<script>window.DashboardModules.get('stage-share').init(document.getElementById('stage-share-panel'), window.STAGE_SHARE_DATA);</script>
