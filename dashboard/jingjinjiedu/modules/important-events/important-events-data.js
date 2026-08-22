@@ -34,8 +34,8 @@ window.JJJ_IMPORTANT_EVENTS_2026 = [
   {
     date: '2026-05-30',
     title: '京津冀高校科研院所创新联盟成立,创新基地在大兴揭牌',
-    source: '首都教育',
-    url: 'https://www.beijing.gov.cn/ywdt/gqrd/202606/t20260601_4680015.html',
+    source: '人民网北京',
+    url: 'https://bj.people.com.cn/n2/2026/0531/c14540-41596641.html',
     score: 60,
     eventId: 'E00005'
   },
@@ -50,8 +50,8 @@ window.JJJ_IMPORTANT_EVENTS_2026 = [
   {
     date: '2026-05-23',
     title: '海淀南开雄安签署人才协同发展合作框架协议',
-    source: '天津市人民政府',
-    url: 'https://www.tj.gov.cn/sy/tjxw/202605/t20260525_7304599.html',
+    source: '中国雄安官网',
+    url: 'https://www.xiongan.gov.cn/20260524/b30003775e02485f9ae221a93915505e/c.html',
     score: 40,
     eventId: 'E00007'
   },
@@ -66,8 +66,8 @@ window.JJJ_IMPORTANT_EVENTS_2026 = [
   {
     date: '2026-04-14',
     title: '京津冀高校首个智能机器人服务中心在津揭牌',
-    source: '天津市教育委员会',
-    url: 'https://jy.tj.gov.cn/JYXW/TJJY/202604/t20260415_7282170.html',
+    source: '人民网',
+    url: 'https://cpc.people.com.cn/n1/2026/0417/c64387-40703128.html',
     score: 20,
     eventId: 'E00009'
   },

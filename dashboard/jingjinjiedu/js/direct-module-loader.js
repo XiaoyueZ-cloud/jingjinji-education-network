@@ -51,10 +51,25 @@
       script.src = absolute(sourcePath, base);
       let localCode = bundledText(sourcePath, base);
       if (localCode != null) {
-        if (sourcePath.endsWith('important-events-data.js')) localCode = localCode.replace(
-          'http://epaper.tianjinwe.com/tjrb/html/2026-04/25/content_157780_1780661.htm',
-          'https://epaper.tianjinwe.com/tjrb/resfile/2026-04-25/04/04.pdf'
-        );
+        if (sourcePath.endsWith('important-events-data.js')) {
+          localCode = localCode
+            .replace(
+              'http://epaper.tianjinwe.com/tjrb/html/2026-04/25/content_157780_1780661.htm',
+              'https://epaper.tianjinwe.com/tjrb/resfile/2026-04-25/04/04.pdf'
+            )
+            .replace(
+              /source: '首都教育',\r?\n\s*url: 'https:\/\/www\.beijing\.gov\.cn\/ywdt\/gqrd\/202606\/t20260601_4680015\.html'/,
+              "source: '人民网北京',\\n    url: 'https://bj.people.com.cn/n2/2026/0531/c14540-41596641.html'"
+            )
+            .replace(
+              /source: '天津市人民政府',\r?\n\s*url: 'https:\/\/www\.tj\.gov\.cn\/sy\/tjxw\/202605\/t20260525_7304599\.html'/,
+              "source: '中国雄安官网',\\n    url: 'https://www.xiongan.gov.cn/20260524/b30003775e02485f9ae221a93915505e/c.html'"
+            )
+            .replace(
+              /source: '天津市教育委员会',\r?\n\s*url: 'https:\/\/jy\.tj\.gov\.cn\/JYXW\/TJJY\/202604\/t20260415_7282170\.html'/,
+              "source: '人民网',\\n    url: 'https://cpc.people.com.cn/n1/2026/0417/c64387-40703128.html'"
+            );
+        }
         if (sourcePath.endsWith('active-index.js')) localCode = localCode.replace(/left:\s*'8%',\s*right:\s*'5%',\s*top:\s*'8%',\s*bottom:\s*'14%'/, "left: '3%', right: '2%', top: '18%', bottom: '10%'");
         if (sourcePath.endsWith('jjj-geo-data.js')) localCode = localCode.replace(
           /fetch\("data\/geo\/jjj-boundaries\.json"\)/g,
