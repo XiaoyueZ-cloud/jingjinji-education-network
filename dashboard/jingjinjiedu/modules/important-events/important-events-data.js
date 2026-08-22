@@ -11,7 +11,7 @@ window.JJJ_IMPORTANT_EVENTS_2026 = [
     date: '2026-04-24',
     title: '京津冀三地签署十五五教育协同总体框架协议',
     source: '天津日报',
-    url: 'http://epaper.tianjinwe.com/tjrb/html/2026-04/25/content_157780_1780661.htm',
+    url: 'https://epaper.tianjinwe.com/tjrb/resfile/2026-04-25/04/04.pdf',
     score: 90,
     eventId: 'E00002'
   },
